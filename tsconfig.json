@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "sourceMap": true,
+        "jsx": "react",
+        "module": "commonjs",
+        "target": "es5",
+        "lib": ["es2017", "dom"],
+        "typeRoots": ["node_modules/@types"],
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "strictNullChecks": true,
+        "strict": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "alwaysStrict": true,
+        "suppressImplicitAnyIndexErrors": true
+    },
+    "typeRoots": [
+        "node_modules/@types",
+        "./typings"
+    ]
+}
