@@ -6,7 +6,8 @@
     "private": true,
     "scripts": {
         "start": "webpack-dev-server --open --hot",
-        "build": "webpack"
+        "build": "webpack",
+        "deploy": "rm -rf ../spriteatlas-deploy/*; cp dist/* ../spriteatlas-deploy/; cd ../spriteatlas-deploy/; git add .; git commit . ; git push origin gh-pages -f"
     },
     "keywords": [],
     "author": "",
