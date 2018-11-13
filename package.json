@@ -5,7 +5,8 @@
     "main": "index.js",
     "private": true,
     "scripts": {
-        "start": "webpack-dev-server --open --hot"
+        "start": "webpack-dev-server --open --hot",
+        "build": "webpack"
     },
     "keywords": [],
     "author": "",
