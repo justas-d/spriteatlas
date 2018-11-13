@@ -58,7 +58,7 @@ export class App {
 
         this.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setClearColor(0xc9c9c9);
-
+7
         this.render();
 
         window.addEventListener("resize", (e) => {

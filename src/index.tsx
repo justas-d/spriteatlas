@@ -8,11 +8,27 @@ import {IExportedQuad, IQuad} from "./TexQuad";
 import {App} from "./App";
 import {Opt} from "./TypescriptUtils";
 
-class Page extends React.Component<{}, {quad: Opt<IQuad>}> {
+interface State {
+    quad: Opt<IQuad>,
+    showLeftBar: boolean,
+    showRightBar: boolean,
+}
+
+class Page extends React.Component<{}, State> {
     private _canvasRef: RefObject<HTMLCanvasElement> = React.createRef();
     private _prevImgUrl: string | undefined;
 
     private _app: Opt<App>;
+
+    constructor(props: State) {
+        super(props);
+
+        this.state = {
+            quad: undefined,
+            showLeftBar: true,
+            showRightBar: true
+        }
+    }
 
     componentDidMount() {
         const canvas = this._canvasRef.current;
@@ -52,15 +68,15 @@ class Page extends React.Component<{}, {quad: Opt<IQuad>}> {
 
         const reader = new FileReader();
         reader.onload = () => {
-            if(typeof reader.result !== "string") return;
+            if (typeof reader.result !== "string") return;
 
             try {
                 const quads: IExportedQuad[] = JSON.parse(reader.result);
 
-                if(this._app) {
+                if (this._app) {
                     this._app.importQuads(quads);
                 }
-            } catch(err) {
+            } catch (err) {
                 console.error(err);
                 alert(err);
 
@@ -71,11 +87,23 @@ class Page extends React.Component<{}, {quad: Opt<IQuad>}> {
     };
 
     onExport = () => {
-        if(!this._app) return;
+        if (!this._app) return;
         const str = this._app.exportQuads();
 
         let blob = new Blob([str], {type: "application/json"});
         saveAs(blob, "spritesheet.json");
+    };
+
+    onToggleLeftBar = () => {
+        this.setState((old) => ({showLeftBar: !old.showLeftBar}));
+    };
+
+    onToggleRightBar = () => {
+        this.setState((old) => ({showRightBar: !old.showRightBar}));
+    };
+
+    onShowHelp = () => {
+        window.open("https://github.com/SSStormy/spriteatlas/blob/master/README.md", "_blank");
     };
 
     render() {
@@ -84,38 +112,58 @@ class Page extends React.Component<{}, {quad: Opt<IQuad>}> {
         let quadWidget: any = null;
 
         const InputWidget = ({type, getter, setter}: any) => {
-            if(!quad) return <></>;
+            if (!quad) return <></>;
 
             const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-                if(quad) setter(e.target.value);
+                if (quad) setter(e.target.value);
             };
 
             return <input type={type} defaultValue={getter()} onChange={onChange}/>
         };
 
-        if(quad) {
-
+        if (quad) {
             quadWidget = (
                 <div style={{position: "absolute", right: "16px", top: "16px"}}>
-                    <InputWidget type="text" getter={() => quad.quadName} setter={(val: string) => quad.quadName =val}/>
+                    <input type="button" onClick={this.onToggleRightBar} value={this.state.showRightBar ? "Hide" : "Show"}/>
+
+                    {this.state.showRightBar && <>
+                        <InputWidget type="text" getter={() => quad.quadName}
+                                     setter={(val: string) => quad.quadName = val}/>
+                    </>
+                    }
                 </div>
             )
         }
 
+        const leftbar = (
+            <div style={{position: "absolute", top: "16px", left: "16px"}}>
+                <input type="button" onClick={this.onToggleLeftBar} value={this.state.showLeftBar ? "Hide" : "Show"}/>
+
+                {this.state.showLeftBar && <>
+                    <div>
+                        <span>Image:</span>
+                        <input type="file" onChange={this.onChangeFile}/>
+                    </div>
+
+                    <div>
+                        <span>Atlas (auto-imports)</span>
+                        <input type="file" onChange={this.onImport}/>
+                    </div>
+
+                    <input type="button" onClick={this.onExport} value="Export Atlas"/>
+
+                    <div>
+                        <input type="button" onClick={this.onShowHelp} value="Help"/>
+                    </div>
+                </>
+                }
+            </div>
+        );
+
         return (
             <div style={{position: "relative", overflow: "hidden", height: "100vh", width: "100%"}}>
                 <canvas ref={this._canvasRef}/>
-
-                <div style={{position: "absolute", top: "16px", left: "16px"}}>
-                    <span>Image:</span>
-                    <input type="file" onChange={this.onChangeFile}/>
-
-                    <span>Atlas:</span>
-                    <input type="file" onChange={this.onImport}/>
-
-                    <input type="button" onClick={this.onExport} value="Export"/>
-                </div>
-
+                {leftbar}
                 {quadWidget}
             </div>
 
