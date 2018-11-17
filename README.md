@@ -5,9 +5,12 @@ Live: https://ssstormy.github.io/spriteatlas
 
 ## Controls
 
-s - enter select mode
-c - enter create mode
-Del - delete selected rect
+* s - enter select mode
+* c - enter create mode
+* Del - delete selected rect
+* hold middle mouse - move camera
+* left mouse - new rect
+* scroll - zoom
 
 ## License
 MIT
