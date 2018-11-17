@@ -11,6 +11,7 @@ Live: https://ssstormy.github.io/spriteatlas
 * hold middle mouse - move camera
 * left mouse - new rect
 * scroll - zoom
+* hold ctrl in select mode - transform rect center
 
 ## License
 MIT
