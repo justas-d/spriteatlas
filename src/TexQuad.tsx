@@ -12,6 +12,8 @@ export interface IExportedQuad {
 
 export interface IQuad {
     quadName: string;
+    scale: vec2;
+    position: vec2;
 }
 
 export const isTexQuad = (obj: any): obj is TexQuad => {
@@ -29,6 +31,14 @@ export class TexQuad extends THREE.Object3D {
     private _quadName: string = "texture";
 
     public center: vec2 = {x: 0.5, y: 0.5};
+
+    public get max() {
+        return this._max;
+    }
+
+    public get min() {
+        return this._min;
+    }
 
     public constructor(private _min: vec2, private _max: vec2, private _assets: Assets, adjust: boolean = true) {
         super();

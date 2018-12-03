@@ -7,6 +7,7 @@ import saveAs from 'save-as';
 import {IExportedQuad, IQuad} from "./TexQuad";
 import {App} from "./App";
 import {Opt} from "./TypescriptUtils";
+import {rect_minMax_to_scaleOrigin} from "./Math";
 
 interface State {
     quad: Opt<IQuad>,
@@ -122,6 +123,8 @@ class Page extends React.Component<{}, State> {
         };
 
         if (quad) {
+            const {scale} = quad;
+
             quadWidget = (
                 <div style={{position: "absolute", right: "16px", top: "16px"}}>
                     <input type="button" onClick={this.onToggleRightBar} value={this.state.showRightBar ? "Hide" : "Show"}/>
@@ -129,6 +132,7 @@ class Page extends React.Component<{}, State> {
                     {this.state.showRightBar && <>
                         <InputWidget type="text" getter={() => quad.quadName}
                                      setter={(val: string) => quad.quadName = val}/>
+                        <p>Scale ({scale.x}; {scale.y})px</p>
                     </>
                     }
                 </div>

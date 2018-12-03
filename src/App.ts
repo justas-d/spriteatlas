@@ -58,7 +58,7 @@ export class App {
 
         this.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setClearColor(0xc9c9c9);
-7
+
         this.render();
 
         window.addEventListener("resize", (e) => {
@@ -156,23 +156,28 @@ export class App {
             const pixel = this.worldToPixel(world);
 
             if (this.camDragStart) {
-
-
                 this.camera.position.x += this.camDragStart.x - world.x;
                 this.camera.position.y += this.camDragStart.y - world.y;
             }
 
             if (this.pixelDragStart) {
+
+
                 if (!this.currentTexQuad) {
                     const quad = this.createTexQuad(pixel, this.pixelDragStart);
                     this.setSelected(quad);
                 }
+
                 if (!this.currentTexQuad) return;
 
                 this.currentTexQuad.setPoints(pixel, this.pixelDragStart);
             }
 
             v2_set_three(this.cursorMesh.position, pixel);
+
+
+            this._changeQuadCallback(this.currentTexQuad);
+
         });
     }
 
